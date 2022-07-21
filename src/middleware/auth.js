@@ -9,7 +9,7 @@ const auth = async(req,res,next)=>{
         next()
     }
     catch(e){
-        res.status(503).send('Unable to Authenticate')
+        res.status(503).send('Unable to Authenticate the User')
     }
  
 
