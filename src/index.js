@@ -13,6 +13,6 @@ app.use(express.json())
 app.use(userRouter)
 app.use(couponRouter)
 
-app.listen(port,()=>{
-    console.log("Server is running successfully on port" +port)
+app.listen(process.env.PORT,()=>{
+    console.log("Server is running successfully on port" +process.env.PORT)
 })

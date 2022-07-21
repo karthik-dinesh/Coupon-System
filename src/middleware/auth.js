@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const auth = async(req,res,next)=>{
     try{
         const token=req.header('Authorization').replace('Bearer ','')
-        const decode=jwt.verify(token,'coupon-secret')
+        const decode=jwt.verify(token,process.env.SECRET)
         const user= await User.findOne({_id:decode.id,'tokens.token':token})
         req.user=user
         next()
