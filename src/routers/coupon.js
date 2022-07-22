@@ -35,7 +35,6 @@ router.get('/getcoupon',auth,async(req,res)=>{
         secretKey:coupon.secretkey
         })
     }
-
     catch(e){   
       res.status(400).send('You have reached maximum coupon limit for the day')
     }
