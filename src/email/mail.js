@@ -9,7 +9,7 @@ const sendMail = async (email,couponcode,secretcode)=>{
             pass: process.env.COUPON_PASS,
         },
       });
-      console.log('Hello')
+      
       const response = await transporter.sendMail({
         from:process.env.COUPON_EMAIL, 
         to: email, 
@@ -18,8 +18,7 @@ const sendMail = async (email,couponcode,secretcode)=>{
       },
         
       )
-      console.log('Hi')
-      console.log("Mail Response",response)  
+     
       return response.response.slice(10,12) 
  
 }
