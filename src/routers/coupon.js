@@ -3,10 +3,10 @@ const router = new express.Router()
 const Coupon=require('../model/coupon')
 const sendmail=require('../email/mail')
 const User=require('../model/user')
-const auth=require('../middleware/auth')
+const {auth,isadmin} =require('../middleware/auth')
 
-//Admin
-router.post('/create/coupon', (req,res)=>{
+
+router.post('/create/coupon',auth,isadmin,(req,res)=>{
     const coupon=new Coupon(req.body)
     coupon.save().then(()=>{
         res.status(200).send(coupon)
@@ -20,9 +20,7 @@ router.post('/create/coupon', (req,res)=>{
 router.get('/getcoupon',auth,async(req,res)=>{
     try{
         const user =await User.VerifyUserRequest(req.user.email)
-      
         const coupon =await Coupon.findOne({couponstatus:false}) 
-        
         const response=await sendmail(user.email,coupon.couponcode,coupon.secretkey)         
         if(response ===process.env.MAILSTATUS){
           const updatedcoupon =await Coupon.findByIdAndUpdate({_id:coupon._id},{couponstatus:true,couponowner:user._id},{new:true}) 
@@ -45,8 +43,8 @@ router.get('/getcoupon',auth,async(req,res)=>{
 })
 
 
-//Admin
-router.get('/claimedusercoupons',async(req,res)=>{
+
+router.get('/claimedusercoupons',auth,isadmin,async(req,res)=>{
     try{
         const claimedcoupons =await Coupon.find({couponstatus:true})
         for(const i in claimedcoupons){
@@ -69,8 +67,8 @@ router.get('/claimedusercoupons',async(req,res)=>{
 })
 
 
-//Admin
-router.get('/countofcoupons',async(req,res)=>{
+
+router.get('/countofcoupons',auth,isadmin,async(req,res)=>{
     try{
         const totalcouponscount = await Coupon.countDocuments({})
         const claimedcouponscount =await Coupon.countDocuments({couponstatus:true})

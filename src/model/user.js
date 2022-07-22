@@ -78,6 +78,15 @@ UserSchema.methods.generateAuthtoken = async function(){
     
 }
 
+UserSchema.methods.toJSON =function(){
+   const user=this
+   console.log("User",user)
+   const userObject=user.toObject()
+   delete userObject.password
+   delete userObject.tokens
+   return userObject
+}
+
 UserSchema.statics.VerifyUserRequest = async(email)=>{
   const user = await User.findOne({email})
   const date=new Date()

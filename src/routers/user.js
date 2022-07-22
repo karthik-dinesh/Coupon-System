@@ -6,7 +6,7 @@ const User=require('../model/user')
 router.post('/user/register',async (req,res)=>{
     const user=new User(req.body)
     user.save().then(()=>{
-        res.status(201).send(user)
+        res.status(201).json(user)
     }).catch((e)=>{
         res.status(400).send('User already Exist!!')
     })
