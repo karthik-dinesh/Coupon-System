@@ -46,18 +46,6 @@ router.get('/getcoupon',auth,async(req,res)=>{
 router.get('/claimedusercoupons',auth,isadmin,async(req,res)=>{
     try{
         const claimedcoupons =await Coupon.find({couponstatus:true})
-        for(const i in claimedcoupons){
-            await claimedcoupons[i].populate('couponowner').execPopulate()
-             const usercoupon = claimedcoupons[i].toObject()
-             delete usercoupon.couponowner.role
-             delete usercoupon.couponowner.userrequeststatus
-             delete usercoupon.couponowner.usercouponcount
-             delete usercoupon.couponowner.couponreceiveddate
-             delete usercoupon.couponowner._id
-             delete usercoupon.couponowner.tokens
-             delete usercoupon.couponowner.password
-             claimedcoupons[i]=usercoupon
-        }
         res.status(400).send(claimedcoupons)
     }catch(e){
         console.log(e)
