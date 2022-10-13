@@ -25,8 +25,7 @@ router.get('/getcoupon',auth,async(req,res)=>{
           const updatedcoupon =await Coupon.findByIdAndUpdate({_id:coupon._id},{couponstatus:true,couponowner:user._id},{new:true}) 
           await User.findByIdAndUpdate({_id:updatedcoupon.couponowner},{
             userrequeststatus:true,
-            couponreceiveddate:new Date(),
-            $inc : {usercouponcount : 1}  
+            couponreceiveddate:new Date(), 
            })
         }
         res.status(200).json({
