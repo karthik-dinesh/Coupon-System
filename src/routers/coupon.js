@@ -20,8 +20,7 @@ router.post('/create/coupon',auth,isadmin,(req,res)=>{
 router.get('/getcoupon',auth,async(req,res)=>{
     try{
         const user =await User.VerifyUserRequest(req.user.email)
-        const coupon =await Coupon.findOne({couponstatus:false}) 
-        const response=await sendmail(user.email,coupon.couponcode,coupon.secretkey)         
+        const coupon =await Coupon.findOne({couponstatus:false})         
         if(response ===process.env.MAILSTATUS){
           const updatedcoupon =await Coupon.findByIdAndUpdate({_id:coupon._id},{couponstatus:true,couponowner:user._id},{new:true}) 
           await User.findByIdAndUpdate({_id:updatedcoupon.couponowner},{
